@@ -13,11 +13,11 @@ Firebase DB, Firebase auth & Cloud Functions
 
 ### ProjectPlan
 
-![ProjectPlan](./src/images/project-plan.png)
+![ProjectPlan](./src/images/projectPlan.jpg)
 
 ### LandingPage
 
-![LandingPage](./src/images/notion-landing-page.png)
+![LandingPage](./src/images/notion-landingpage.png)
 
 ### LandingPagewithSignedIn
 
