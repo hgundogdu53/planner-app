@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { createStore, applyMiddleware, compose } from "redux";
-import rootReducer from "./store/reducers/rootReducer.js";
+import rootReducer from "./store/reducers/rootReducer";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import {
@@ -14,33 +14,55 @@ import {
   reduxFirestore,
 } from "redux-firestore";
 import { ReactReduxFirebaseProvider, getFirebase } from "react-redux-firebase";
+import fbConfig from "./config/fbConfig";
 import firebase from "firebase/app";
-import fbConfig from "./config/fbConfig.js";
+
+//for render on auth ready
+import { useSelector } from "react-redux";
+import { isLoaded } from "react-redux-firebase";
 
 const store = createStore(
   rootReducer,
   compose(
-    applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reduxFirestore(fbConfig)
+    applyMiddleware(thunk.withExtraArgument({ getFirestore, getFirebase })),
+    reduxFirestore(firebase, fbConfig)
   )
 );
 
-const rrfConfig = {
+const profileSpecificProps = {
   userProfile: "users",
+  useFirestoreForProfile: true,
+  enableRedirectHandling: false,
+  resetBeforeLogin: false,
 };
+
 const rrfProps = {
   firebase,
-  config: rrfConfig,
+  config: fbConfig && profileSpecificProps,
   dispatch: store.dispatch,
   createFirestoreInstance,
 };
 
+function AuthIsLoaded({ children }) {
+  const auth = useSelector((state) => state.firebase.auth);
+  if (!isLoaded(auth))
+    return (
+      <div className="center">
+        {" "}
+        <p>Loading...</p>
+      </div>
+    );
+  return children;
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AuthIsLoaded>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthIsLoaded>
     </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById("root")
