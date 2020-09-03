@@ -24,8 +24,11 @@ const ProjectDetails = (props) => {
           <div className="card-content">
             <span className="card-title">
               {project.title}
-              <a class="btn-floating btn-small right waves-light red">
-                <i onClick={handleDelete} class="material-icons">
+              <a
+                href="/"
+                className="btn-floating btn-small right waves-light red"
+              >
+                <i onClick={handleDelete} className="material-icons">
                   delete
                 </i>
               </a>
