@@ -1,6 +1,6 @@
-## pawUp-clientside
+## Notion Planner
 
-Connect your pets with pets from your neighborhood.
+Project management tool with authentication and cloud functions.
 
 ## Link: https://notion-planner.web.app/
 
